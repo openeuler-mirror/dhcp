@@ -1,0 +1,75 @@
+--- a/client/dhclient.c	2019-01-25 14:34:46.996000000 +0800
++++ b/client/dhclient.c	2019-01-25 14:34:16.382000000 +0800
+@@ -114,6 +114,8 @@
+ 
+ int bootp_broadcast_always = 0;
+ 
++int buf_size = 128;
++
+ extern struct option *default_requested_options[];
+ 
+ void run_stateless(int exit_mode, u_int16_t port);
+@@ -129,6 +131,8 @@
+ static void dhclient_ddns_cb_free(dhcp_ddns_cb_t *ddns_cb,
+                                    char* file, int line);
+ 
++static int check_dhclient_pid(pid_t pid);
++
+ /*!
+  *
+  * \brief Print the generic usage message
+@@ -682,7 +686,8 @@
+ 			e = fscanf(pidfd, "%ld\n", &temp);
+ 			oldpid = (pid_t)temp;
+ 
+-			if (e != 0 && e != EOF && oldpid) {
++			if (e != 0 && e != EOF) {
++			 if (oldpid && check_dhclient_pid(oldpid)) {
+ 				if (kill(oldpid, SIGTERM) == 0) {
+ 					log_info("Killed old client process");
+ 					(void) unlink(path_dhclient_pid);
+@@ -698,6 +703,7 @@
+ 					log_info("Removed stale PID file");
+ 					(void) unlink(path_dhclient_pid);
+ 				}
++				 }
+ 			}
+ 			fclose(pidfd);
+ 		} else {
+@@ -738,7 +744,7 @@
+ 						oldpid = (pid_t)temp;
+ 
+ 						if (e != 0 && e != EOF) {
+-							if (oldpid) {
++							if (oldpid && check_dhclient_pid(oldpid)) {
+ 								if (kill(oldpid, SIGTERM) == 0)
+ 									unlink(path_dhclient_pid);
+ 							}
+@@ -6045,3 +6051,27 @@
+ 		log_error("dhcp4o6_stop: send(): %m");
+ }
+ #endif /* DHCPv6 && DHCP4o6 */
++
++static int check_dhclient_pid(pid_t pid) {
++	char proc_pid_path[buf_size];
++	char task_name[buf_size];
++
++	memset(proc_pid_path, 0, buf_size);
++	memset(task_name, 0, buf_size);
++
++	snprintf(proc_pid_path, buf_size - 1, "/proc/%d/comm", pid);
++
++	FILE* fp = fopen(proc_pid_path, "r");
++	if(fp != NULL) {
++		if( fgets(task_name, buf_size, fp) == NULL ) {
++			fclose(fp);
++			return 0;
++		 }
++		fclose(fp);
++		if(strncmp(task_name, "dhclient", 8) == 0) {
++			return 1;
++		}
++	}
++
++	 return 0;
++}

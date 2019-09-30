@@ -1,0 +1,35 @@
+From 63b155800d98d3d245147c7cfcf9053e574fedbf Mon Sep 17 00:00:00 2001
+From: Thomas Markwalder <tmark@isc.org>
+Date: Wed, 26 Sep 2018 10:54:45 -0400
+Subject: [PATCH 2/2] Correct BIND9 dns API call constant
+
+    Merges in rt47757
+---
+ common/dns.c |  4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/common/dns.c b/common/dns.c
+index 18ad704..1646760 100644
+--- a/common/dns.c
++++ b/common/dns.c
+@@ -2271,7 +2271,7 @@ ddns_modify_fwd(dhcp_ddns_cb_t *ddns_cb, const char *file, int line)
+ 			     dns_rdataclass_in, zname,
+ 			     &prereqlist, &updatelist,
+ 			     zlist, tsec_key,
+-			     DNS_CLIENTRESOPT_ALLOWRUN,
++			     DNS_CLIENTUPDOPT_ALLOWRUN,
+ 			     dhcp_gbl_ctx.task,
+ 			     ddns_interlude,
+ 			     (void *)ddns_cb,
+@@ -2498,7 +2498,7 @@ ddns_modify_ptr(dhcp_ddns_cb_t *ddns_cb, const char *file, int line)
+ 			     dns_rdataclass_in, zname,
+ 			     NULL, &updatelist,
+ 			     zlist, tsec_key,
+-			     DNS_CLIENTRESOPT_ALLOWRUN,
++			     DNS_CLIENTUPDOPT_ALLOWRUN,
+ 			     dhcp_gbl_ctx.task,
+ 			     ddns_interlude, (void *)ddns_cb,
+ 			     &ddns_cb->transaction);
+-- 
+1.8.3.1
+

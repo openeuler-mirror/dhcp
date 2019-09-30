@@ -1,0 +1,27 @@
+From cbe1a3e5e51beabaf0a8dad3b51d349bd900b076 Mon Sep 17 00:00:00 2001
+From: Thomas Markwalder <tmark@isc.org>
+Date: Mon, 27 Nov 2017 13:30:27 -0500
+Subject: [PATCH 1/2] Corrected dhclient command line parsing of
+ --dad-wait-time
+
+    Merges in rt46535
+---
+ client/dhclient.c | 2 ++
+ 1 files changed, 2 insertions(+)
+
+diff --git a/client/dhclient.c b/client/dhclient.c
+index 057dec9..5d9538b 100644
+--- a/client/dhclient.c
++++ b/client/dhclient.c
+@@ -446,6 +446,8 @@ main(int argc, char **argv) {
+ 			if (++i == argc) {
+ 				usage(use_noarg, argv[i-1]);
+ 			}
++
++			errno = 0;
+ 			dad_wait_time = (int)strtol(argv[i], &s, 10);
+ 			if (errno || (*s != '\0') || (dad_wait_time < 0)) {
+ 				usage("Invalid value for --dad-wait-time: %s", argv[i]);
+-- 
+1.8.3.1
+
