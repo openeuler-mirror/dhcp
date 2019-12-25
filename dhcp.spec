@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.3.6
-Release:   31
+Release:   32
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -20,7 +20,7 @@ Source6:   dhcpd.service
 Source7:   dhcpd6.service
 Source8:   dhcrelay.service
 
-#patch18,20,39,40,41,,42,43 backport from upstream,other from fedora
+#patch18,20,39,40,41,,42,43 from upstream,other from fedora
 Patch0:    dhcp-remove-bind.patch
 
 Patch1:    dhcp-sharedlib.patch
@@ -62,7 +62,6 @@ Patch30:   dhcp-4.3.6-options_overflow.patch
 Patch31:   dhcp-4.3.6-reference_count_overflow.patch
 Patch32:   dhcp-iface_hwaddr_discovery.patch
 
-#patches for backport
 Patch6000: Correct-BIND9-dns-API-call-constant.patch
 Patch6001: Corrected-dhclient-command-line-parsing-of-dad-wait-.patch
 Patch6002: CVE-2019-6470.patch
@@ -70,6 +69,8 @@ Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
 Patch6004: bugfix-reduce-getifaddr-calls.patch
 
 Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
+Patch9001: bugfix-dhcpd-2038-problem.patch
+Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -313,6 +314,13 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-32
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:Fix dhcpd 2038 problem;
+       Adds address prefix len to dhclient cli
+
 * Wed Sep 25 2019 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-31
 - Type:bugfix
 - ID:NA

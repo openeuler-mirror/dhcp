@@ -1,0 +1,78 @@
+From 3286e40ff01e78c172dfb0cdb684b58854af7604 Mon Sep 17 00:00:00 2001
+From: liuzhikang <liuzhikang3@huawei.com>
+Date: Thu, 31 Oct 2019 16:07:22 +0800
+
+Signed-off-by: liuzhikang <liuzhikang3@huawei.com>
+---
+ client/dhc6.c     |  3 ++-
+ client/dhclient.c | 17 +++++++++++++++--
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/client/dhc6.c b/client/dhc6.c
+index 5460ee1..fe0057c 100644
+--- a/client/dhc6.c
++++ b/client/dhc6.c
+@@ -148,6 +148,7 @@ static int dhc6_score_lease(struct client_state *client,
+ 
+ extern int onetry;
+ extern int stateless;
++extern int address_prefix_len;
+ 
+ /*
+  * Assign DHCPv6 port numbers as a client.
+@@ -4364,7 +4365,7 @@ dhc6_marshall_values(const char *prefix, struct client_state *client,
+ 				      (unsigned) addr->plen);
+ 		} else {
+ 			client_envadd(client, prefix, "ip6_prefixlen",
+-				      "%d", DHCLIENT_DEFAULT_PREFIX_LEN);
++				      "%d", address_prefix_len);
+ 			client_envadd(client, prefix, "ip6_address",
+ 				      "%s", piaddr(addr->address));
+ 		}
+diff --git a/client/dhclient.c b/client/dhclient.c
+index 62b90cf..9f8ba06 100644
+--- a/client/dhclient.c
++++ b/client/dhclient.c
+@@ -108,6 +108,7 @@ int require_all_ias = 0;	/* If the user requires all of the IAs to
+ 				   be available before accepting a lease
+ 				   0 = no, 1 = requries */
+ int dad_wait_time = 0;
++int address_prefix_len = DHCLIENT_DEFAULT_PREFIX_LEN;
+ char *mockup_relay = NULL;
+ 
+ char *progname = NULL;
+@@ -190,9 +191,11 @@ usage(const char *sfmt, const char *sarg)
+ #ifdef DHCP4o6
+ 		  "[-4|-6] [-SNTPRI1dvrxi] [-nw] -4o6 <port>] [-p <port>]\n"
+ 		  "                [-D LL|LLT] [--dad-wait-time seconds]\n"
++		  "                [--address-prefix-len length]\n"
+ #else /* DHCP4o6 */
+ 		  "[-4|-6] [-SNTPRI1dvrxi] [-nw] [-p <port>]\n"
+-          "                [-D LL|LLT] [--dad-wait-time seconds]\n"
++		  "                [-D LL|LLT] [--dad-wait-time seconds]\n"
++		  "                [--address-prefix-len length]\n"
+ #endif
+ #else /* DHCPv6 */
+ 		  "[-I1dvrxi] [-nw] [-p <port>] [-D LL|LLT] \n"
+@@ -452,7 +455,17 @@ main(int argc, char **argv) {
+ 			if (errno || (*s != '\0') || (dad_wait_time < 0)) {
+ 				usage("Invalid value for --dad-wait-time: %s", argv[i]);
+ 			}
+-
++		} else if (!strcmp(argv[i], "--address-prefix-len")) {
++			if (++i == argc) {
++					 usage(use_noarg, argv[i-1]);
++			}
++			errno = 0;
++			address_prefix_len = (int)strtol(argv[i], &s, 10);
++			if (errno || (*s != '\0') ||
++				(address_prefix_len < 0)) {
++					usage("Invalid value for"
++								" --address-prefix-len: %s", argv[i]);
++			}
+ #endif /* DHCPv6 */
+ 		} else if (!strcmp(argv[i], "-D")) {
+ 			duid_v4 = 1;
+-- 
+2.19.1
+

@@ -1,0 +1,38 @@
+From 4159defd501cccf095481b661b8a98f4effbe077 Mon Sep 17 00:00:00 2001
+From: zhanglu37 <zhanglu37@huawei.com>
+Date: Fri, 25 Oct 2019 16:19:13 +0800
+Subject: [PATCH] Dhcpd: 64 bit cpu not troubled by 2038 problem
+
+commit_type: bugfix
+reason: 64 bit cpu not troubled by 2038 problem
+
+Signed-off-by: zhanglu37 <zhanglu37@huawei.com>
+---
+ common/parse.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/common/parse.c b/common/parse.c
+index 729d442..c58b13c 100644
+--- a/common/parse.c
++++ b/common/parse.c
+@@ -1145,12 +1145,15 @@ parse_date_core(cfile)
+ 		return((TIME)0);
+ 	}
+ 
++	/* 64Bit architecture do not bother by integer overflow 2038 problem */
++        if (sizeof(TIME) != 8) {
+ 	/* If the year is 2038 or greater return the max time to avoid
+ 	 * overflow issues.  We could try and be more precise but there
+ 	 * doesn't seem to be a good reason to worry about it and waste
+ 	 * the cpu looking at the rest of the date. */
+-	if (year >= 138)
+-		return(MAX_TIME);
++	    if (year >= 138)
++		    return(MAX_TIME);
++	}
+ 
+ 	/* Guess the time value... */
+ 	guess = ((((((365 * (year - 70) +	/* Days in years since '70 */
+-- 
+2.19.1
+
