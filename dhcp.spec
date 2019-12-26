@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.3.6
-Release:   32
+Release:   33
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -100,11 +100,7 @@ Requires: %{name} = %{epoch}:%{version}-%{release}
 Header files for using the ISC DHCP libraries.  The
 libdhcpctl and libomapi static libraries are also included in this package.
 
-%package doc
-Summary: Documentation files for dhcp.
-
-%description doc
-The dhcp-doc package contains documentation files.
+%package_help
 
 %prep
 %autosetup -n %{name}-%{version} -p1
@@ -285,20 +281,17 @@ exit 0
 %{_libdir}/libomapi.so
 %attr(0755,root,root) %{_libdir}/pm-utils/sleep.d/56dhclient
 
-
-
 %files  devel
-%license LICENSE
+%defattr(-,root,root)
 %doc doc/IANA-arp-parameters doc/api+protocol
 %{_includedir}/dhcpctl
 %{_includedir}/omapip
 %{_includedir}/isc-dhcp
 
 
-%files doc
+%files help
 %defattr(644,root,root)
 %doc doc/*
-%license LICENSE
 %{_mandir}/man1/omshell.1.gz
 %{_mandir}/man5/dhcpd.conf.5.gz
 %{_mandir}/man5/dhcpd.leases.5.gz
@@ -314,6 +307,9 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Dec 24 2019 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-33
+- rename doc subpackage as help subpackage
+
 * Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-32
 - Type:bugfix
 - ID:NA
