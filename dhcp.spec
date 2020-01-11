@@ -3,14 +3,13 @@
 
 Name:      dhcp
 Version:   4.3.6
-Release:   33
+Release:   34
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
 License:   ISC
 URL:       https://www.isc.org/dhcp/
 Source0:   http://ftp.isc.org/isc/dhcp/%{version}/dhcp-%{version}.tar.gz
-#Source1~8 copy from fedora
 Source1:   dhclient-script
 Source2:   README.dhclient.d
 Source3:   11-dhclient
@@ -20,7 +19,6 @@ Source6:   dhcpd.service
 Source7:   dhcpd6.service
 Source8:   dhcrelay.service
 
-#patch18,20,39,40,41,,42,43 from upstream,other from fedora
 Patch0:    dhcp-remove-bind.patch
 
 Patch1:    dhcp-sharedlib.patch
@@ -31,7 +29,6 @@ Patch4:    dhcp-dhclient-decline-backoff.patch
 Patch5:    dhcp-unicast-bootp.patch
 Patch6:    dhcp-default-requested-options.patch
 
-Patch7:    dhcp-manpages.patch
 Patch8:    dhcp-paths.patch
 Patch9:    dhcp-CLOEXEC.patch
 Patch10:   dhcp-garbage-chars.patch
@@ -307,6 +304,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Sat Jan 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-34
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC: delete patches
+
 * Tue Dec 24 2019 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-33
 - rename doc subpackage as help subpackage
 
