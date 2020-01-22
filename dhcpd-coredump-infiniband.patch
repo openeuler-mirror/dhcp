@@ -1,0 +1,36 @@
+From d7b7c875ca93e2bca12d6cf5ff02d78d03030cf9 Mon Sep 17 00:00:00 2001
+From: zhanglu <zhanglu37@huawei.com>
+Date: Wed, 22 Jan 2020 14:39:19 +0800
+Subject: [PATCH] dhcpd-coredump-infiniband.patch
+
+---
+ common/lpf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/common/lpf.c b/common/lpf.c
+index 0cc9e8a..a3f0ead 100644
+--- a/common/lpf.c
++++ b/common/lpf.c
+@@ -754,6 +754,11 @@ get_hw_addr3(struct interface_info *info, struct ifaddrs *ifaddrs_start)
+ 			*/
+ 			if ((colon = strchr(dup, ':')) != NULL) {
+ 				*colon = '\0';
++
++				if (sll_allocated) {
++					dfree(sll, MDL);
++					sll_allocated = 0;
++				}
+ 				if ((sll = get_ll(ifaddrs, &ifa, dup)) == NULL)
+ 					log_fatal("Error getting hardware address for \"%s\": %m", name);
+ 			}
+@@ -802,7 +807,6 @@ get_hw_addr3(struct interface_info *info, struct ifaddrs *ifaddrs_start)
+ 
+ 	if (sll_allocated)
+ 		dfree(sll, MDL);
+-	//freeifaddrs(ifaddrs);
+         return result;
+ }
+ 
+-- 
+1.8.3.1
+
