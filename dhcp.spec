@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.3.6
-Release:   34
+Release:   35
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -68,6 +68,7 @@ Patch6004: bugfix-reduce-getifaddr-calls.patch
 Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
 Patch9001: bugfix-dhcpd-2038-problem.patch
 Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
+Patch9003: dhcpd-coredump-infiniband.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -304,6 +305,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Wed Jan 22 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-35
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC: modify dhcpd coredump when discover interfaces
+
 * Sat Jan 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 4.3.6-34
 - Type:enhancement
 - ID:NA
