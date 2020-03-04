@@ -1,0 +1,45 @@
+From bab9f6ff2345fb5a1db048349fe088c1ee7d440b Mon Sep 17 00:00:00 2001
+From: Anonymous_Z <zhangrui182@huawei.com>
+Date: Tue, 3 Mar 2020 17:36:41 +0800
+Subject: [PATCH] dhcp: recheck whether last pid was held by other process
+
+Signed-off-by: zhanglu <zhanglu37@huawei.com>
+---
+ client/dhclient.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/client/dhclient.c b/client/dhclient.c
+index 9f8ba06..97b04e0 100644
+--- a/client/dhclient.c
++++ b/client/dhclient.c
+@@ -774,15 +774,26 @@ main(int argc, char **argv) {
+ 		}
+ 	} else {
+ 		FILE *pidfp = NULL;
++		FILE *commfp = NULL;
+ 		long temp = 0;
+ 		pid_t dhcpid = 0;
+ 		int dhc_running = 0;
+ 		char procfn[256] = "";
++		char pidname_path[256] = "";
++		char pidname[256] = "";
+ 
+ 		if ((pidfp = fopen(path_dhclient_pid, "re")) != NULL) {
+ 			if ((fscanf(pidfp, "%ld", &temp)==1) && ((dhcpid=(pid_t)temp) > 0)) {
+ 				snprintf(procfn,256,"/proc/%u",dhcpid);
+-				dhc_running = (access(procfn, F_OK) == 0);
++				snprintf(pidname_path,256,"%s/comm",procfn);
++
++				if(access(procfn, F_OK) == 0) {
++					if((commfp = fopen(pidname_path, "r")) != NULL) {
++						fscanf(commfp, "%s", pidname);
++						dhc_running = (strncmp("dhclient", pidname, strlen("dhclient")) == 0);
++						fclose(commfp);
++					}
++				}
+ 			}
+ 
+ 			fclose(pidfp);
+-- 
+1.8.3.1
+

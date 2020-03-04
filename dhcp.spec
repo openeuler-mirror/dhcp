@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.3.6
-Release:   35
+Release:   37
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -69,6 +69,8 @@ Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
 Patch9001: bugfix-dhcpd-2038-problem.patch
 Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
 Patch9003: dhcpd-coredump-infiniband.patch
+Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
+
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -204,6 +206,7 @@ install -D -p -m 0644 contrib/ldap/dhcp.schema $RPM_BUILD_ROOT%{_sysconfdir}/ope
 find $RPM_BUILD_ROOT -type f -name "*.la" -delete -print
 
 %check
+make check
 
 %pre
 %global gid_uid 177
@@ -305,6 +308,18 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Mar 3 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-37
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC: recheck if last pid was held by other process
+
+* Fri Feb 21 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-36
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC: add make check
+
 * Wed Jan 22 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-35
 - Type:bugfix
 - ID:NA
