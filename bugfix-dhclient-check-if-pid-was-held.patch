@@ -1,7 +1,7 @@
-From bab9f6ff2345fb5a1db048349fe088c1ee7d440b Mon Sep 17 00:00:00 2001
-From: Anonymous_Z <zhangrui182@huawei.com>
-Date: Tue, 3 Mar 2020 17:36:41 +0800
-Subject: [PATCH] dhcp: recheck whether last pid was held by other process
+From 569ca7918daa63832207e0d96f7d0b2d78300850 Mon Sep 17 00:00:00 2001
+From: zhanglu <zhanglu37@huawei.com>
+Date: Thu, 27 Feb 2020 20:47:22 +0800
+Subject: [PATCH] dhcp: solve start dhclient when last pid was held.
 
 Signed-off-by: zhanglu <zhanglu37@huawei.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: zhanglu <zhanglu37@huawei.com>
  1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/client/dhclient.c b/client/dhclient.c
-index 9f8ba06..97b04e0 100644
+index 9f8ba06..eff3444 100644
 --- a/client/dhclient.c
 +++ b/client/dhclient.c
 @@ -774,15 +774,26 @@ main(int argc, char **argv) {
@@ -30,8 +30,8 @@ index 9f8ba06..97b04e0 100644
 -				dhc_running = (access(procfn, F_OK) == 0);
 +				snprintf(pidname_path,256,"%s/comm",procfn);
 +
-+				if(access(procfn, F_OK) == 0) {
-+					if((commfp = fopen(pidname_path, "r")) != NULL) {
++				if (access(procfn, F_OK) == 0) {
++					if ((commfp = fopen(pidname_path, "r")) != NULL) {
 +						fscanf(commfp, "%s", pidname);
 +						dhc_running = (strncmp("dhclient", pidname, strlen("dhclient")) == 0);
 +						fclose(commfp);
@@ -41,5 +41,5 @@ index 9f8ba06..97b04e0 100644
  
  			fclose(pidfp);
 -- 
-1.8.3.1
+2.19.1
 

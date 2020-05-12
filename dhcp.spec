@@ -2,75 +2,58 @@
 %global dhcpconfdir %{_sysconfdir}/dhcp
 
 Name:      dhcp
-Version:   4.3.6
-Release:   37
+Version:   4.4.2b1
+Release:   0
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
 License:   ISC
 URL:       https://www.isc.org/dhcp/
 Source0:   http://ftp.isc.org/isc/dhcp/%{version}/dhcp-%{version}.tar.gz
-Source1:   dhclient-script
-Source2:   README.dhclient.d
-Source3:   11-dhclient
-Source4:   12-dhcpd
-Source5:   56dhclient
-Source6:   dhcpd.service
-Source7:   dhcpd6.service
-Source8:   dhcrelay.service
+Source1:  dhclient-script
+Source2:  README.dhclient.d
+Source3:  11-dhclient
+Source5:  56dhclient
+Source6:  dhcpd.service
+Source7:  dhcpd6.service
+Source8:  dhcrelay.service
 
-Patch0:    dhcp-remove-bind.patch
+Patch1 : 0001-change-bug-url.patch
+Patch2 : 0002-additional-dhclient-options.patch
+Patch3 : 0003-Handle-releasing-interfaces-requested-by-sbin-ifup.patch
+Patch4 : 0004-Support-unicast-BOOTP-for-IBM-pSeries-systems-and-ma.patch
+Patch5 : 0005-Change-default-requested-options.patch
+Patch6 : 0006-Various-man-page-only-fixes.patch
+Patch7 : 0007-Change-paths-to-conform-to-our-standards.patch
+Patch8 : 0008-Make-sure-all-open-file-descriptors-are-closed-on-ex.patch
+Patch9 : 0009-Fix-garbage-in-format-string-error.patch
+Patch10 : 0010-Handle-null-timeout.patch
+Patch11 : 0011-Drop-unnecessary-capabilities.patch
+Patch12 : 0012-RFC-3442-Classless-Static-Route-Option-for-DHCPv4-51.patch
+Patch13 : 0013-DHCPv6-over-PPP-support-626514.patch
+Patch14 : 0014-IPoIB-support-660681.patch
+Patch15 : 0015-Add-GUID-DUID-to-dhcpd-logs-1064416.patch
+Patch16 : 0016-Turn-on-creating-sending-of-DUID.patch
+Patch17 : 0017-Send-unicast-request-release-via-correct-interface.patch
+Patch18 : 0018-No-subnet-declaration-for-iface-should-be-info-not-e.patch
+Patch19 : 0019-dhclient-write-DUID_LLT-even-in-stateless-mode-11563.patch
+Patch20 : 0020-Discover-all-hwaddress-for-xid-uniqueness.patch
+Patch21 : 0021-Load-leases-DB-in-non-replay-mode-only.patch
+Patch22 : 0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
+Patch23 : 0023-option-97-pxe-client-id.patch
+Patch24 : 0024-Detect-system-time-changes.patch
+Patch25 : 0025-bind-Detect-system-time-changes.patch
+Patch26 : 0026-Add-dhclient-5-B-option-description.patch
+Patch27:  0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
-Patch1:    dhcp-sharedlib.patch
+#Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
+#Patch6004: bugfix-reduce-getifaddr-calls.patch
 
-Patch2:    dhcp-dhclient-options.patch
-Patch3:    dhcp-release-by-ifup.patch
-Patch4:    dhcp-dhclient-decline-backoff.patch
-Patch5:    dhcp-unicast-bootp.patch
-Patch6:    dhcp-default-requested-options.patch
-
-Patch8:    dhcp-paths.patch
-Patch9:    dhcp-CLOEXEC.patch
-Patch10:   dhcp-garbage-chars.patch
-Patch11:   dhcp-add_timeout_when_NULL.patch
-Patch12:   dhcp-64_bit_lease_parse.patch
-Patch13:   dhcp-capability.patch
-
-Patch14:   dhcp-sendDecline.patch
-Patch15:   dhcp-rfc3442-classless-static-routes.patch
-Patch16:   dhcp-honor-expired.patch
-Patch17:   dhcp-PPP.patch
-
-Patch18:   dhcp-lpf-ib.patch
-Patch19:   dhcp-IPoIB-log-id.patch
-Patch20:   dhcp-improved-xid.patch
-
-Patch21:   dhcp-client-request-release-bind-iface.patch
-Patch22:   dhcp-no-subnet-error2info.patch
-Patch23:   dhcp-sd_notify.patch
-
-Patch24:   dhcp-option97-pxe-client-id.patch
-Patch25:   dhcp-stateless-DUID-LLT.patch
-Patch26:   dhcp-dhclient-preinit6s.patch
-Patch27:   dhcp-handle_ctx_signals.patch
-Patch28:   dhcp-4.3.6-omapi-leak.patch
-Patch29:   dhcp-4.3.6-isc-util.patch
-Patch30:   dhcp-4.3.6-options_overflow.patch
-Patch31:   dhcp-4.3.6-reference_count_overflow.patch
-Patch32:   dhcp-iface_hwaddr_discovery.patch
-
-Patch6000: Correct-BIND9-dns-API-call-constant.patch
-Patch6001: Corrected-dhclient-command-line-parsing-of-dad-wait-.patch
-Patch6002: CVE-2019-6470.patch
-Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
-Patch6004: bugfix-reduce-getifaddr-calls.patch
-
-Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
-Patch9001: bugfix-dhcpd-2038-problem.patch
-Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
-Patch9003: dhcpd-coredump-infiniband.patch
-Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
-
+#Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
+#Patch9001: bugfix-dhcpd-2038-problem.patch
+#Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
+#Patch9003: dhcpd-coredump-infiniband.patch
+#Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -103,8 +86,13 @@ libdhcpctl and libomapi static libraries are also included in this package.
 %package_help
 
 %prep
-%autosetup -n %{name}-%{version} -p1
-rm bind/bind.tar.gz
+%setup -n %{name}-%{version}
+pushd bind
+tar -xvf bind.tar.gz
+ln -s bind-9* bind
+popd
+%autopatch -p1 
+#rm bind/bind.tar.gz
 
 sed -i -e 's|/var/db/|%{_localstatedir}/lib/dhcpd/|g' contrib/dhcp-lease-list.pl
 
@@ -122,10 +110,10 @@ CFLAGS="%{optflags} -fno-strict-aliasing" \
     --with-cli-pid-file=%{_localstatedir}/run/dhclient.pid \
     --with-cli6-pid-file=%{_localstatedir}/run/dhclient6.pid \
     --with-relay-pid-file=%{_localstatedir}/run/dhcrelay.pid \
-    --with-libbind=/usr/bin/isc-export-config.sh \
     --with-ldap --with-ldapcrypto --with-ldap-gssapi --disable-static  --enable-log-pid --enable-paranoia --enable-early-chroot \
     --enable-binary-leases --with-systemd
-%make_build
+
+make
 
 %install
 %make_install
@@ -138,7 +126,6 @@ mkdir -p $RPM_BUILD_ROOT%{dhcpconfdir}/dhclient.d
 
 mkdir -p $RPM_BUILD_ROOT%{nmconfdir}/dispatcher.d
 install -p -m 0755 %{SOURCE3} $RPM_BUILD_ROOT%{nmconfdir}/dispatcher.d
-install -p -m 0755 %{SOURCE4} $RPM_BUILD_ROOT%{nmconfdir}/dispatcher.d
 
 install -D -p -m 0755 %{SOURCE5} $RPM_BUILD_ROOT%{_libdir}/pm-utils/sleep.d/56dhclient
 
@@ -262,7 +249,6 @@ exit 0
 %dir %{_sysconfdir}/NetworkManager
 %dir %{_sysconfdir}/NetworkManager/dispatcher.d
 %{_sysconfdir}/NetworkManager/dispatcher.d/11-dhclient
-%{_sysconfdir}/NetworkManager/dispatcher.d/12-dhcpd
 %attr(0644,root,root)   %{_unitdir}/dhcpd.service
 %attr(0644,root,root)   %{_unitdir}/dhcpd6.service
 %attr(0644,root,root) %{_unitdir}/dhcrelay.service
@@ -276,10 +262,6 @@ exit 0
 %{_sbindir}/dhclient-script
 %{_sbindir}/dhcrelay
 %{_bindir}/omshell
-%{_libdir}/libdhcpctl.so.*
-%{_libdir}/libomapi.so.*
-%{_libdir}/libdhcpctl.so
-%{_libdir}/libomapi.so
 %attr(0755,root,root) %{_libdir}/pm-utils/sleep.d/56dhclient
 
 %files  devel
@@ -287,7 +269,8 @@ exit 0
 %doc doc/IANA-arp-parameters doc/api+protocol
 %{_includedir}/dhcpctl
 %{_includedir}/omapip
-%{_includedir}/isc-dhcp
+%{_libdir}/libdhcp*.a
+%{_libdir}/libomapi.a
 
 
 %files help
@@ -308,17 +291,23 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Thu Apr 24 2020 zhanglu<zhanglu37@huawei.com> - 4.4.2b1
+- Type:requirement
+- ID:NA
+- SUG:restart
+- DESC: update to 4.4.2b1
+
 * Tue Mar 3 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-37
 - Type:bugfix
 - ID:NA
 - SUG:restart
 - DESC: recheck if last pid was held by other process
 
-* Fri Feb 21 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-36
-- Type:enhancement
+* Thu Feb 27 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-36
+- Type:bugfix
 - ID:NA
-- SUG:NA
-- DESC: add make check
+- SUG:restart
+- DESC: check if last pid when held by other process
 
 * Wed Jan 22 2020 zhanglu<zhanglu37@huawei.com> - 4.3.6-35
 - Type:bugfix
