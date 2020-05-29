@@ -1,0 +1,191 @@
+From 722051d384b940091ed6f1acf60d22fdb65efde6 Mon Sep 17 00:00:00 2001
+From: LuZhang<zhanglu37@huawei.com>
+Date: Thu, 19 Sep 2019 16:05:23 +0800
+Subject: [PATCH] Module: DHCP
+
+reason: reducing getifaddrs calls and improving running performance
+
+Signed-off-by: LuZhang<zhanglu37@huawei.com>
+---
+ common/discover.c |   5 +-
+ common/lpf.c      | 113 ++++++++++++++++++++++++++++++++++++++++++++++
+ includes/dhcpd.h  |   5 ++
+ 3 files changed, 122 insertions(+), 1 deletion(-)
+
+diff --git a/common/discover.c b/common/discover.c
+index 6860645..26be5de 100644
+--- a/common/discover.c
++++ b/common/discover.c
+@@ -588,9 +588,12 @@ discover_interfaces(int state) {
+ #endif
+ 
+ 	static int setup_fallback = 0;
++	struct ifaddrs *ifaddrs_start = NULL;
+ 
+ 	if (!begin_iface_scan(&ifaces)) {
+ 		log_fatal("Can't get list of interfaces.");
++	} else {
++		ifaddrs_start = ifaces.head;
+ 	}
+ 
+ 	/* If we already have a list of interfaces, and we're running as
+@@ -651,7 +654,7 @@ discover_interfaces(int state) {
+ 			tmp = interfaces; /* XXX */
+ 		}
+ 		if (tmp != NULL)
+-			try_hw_addr(tmp);
++			try_hw_addr2(tmp, ifaddrs_start);
+ 
+ 		if (dhcp_interface_discovery_hook) {
+ 			(*dhcp_interface_discovery_hook)(tmp);
+index 9ec8a31..823ba6b 100644
+--- a/common/lpf.c
++++ b/common/lpf.c
+@@ -697,6 +697,119 @@ ioctl_get_ll(char *name)
+ 	return sll;
+ }
+ 
++isc_result_t
++get_hw_addr3(struct interface_info *info, struct ifaddrs *ifaddrs_start)
++{
++	struct hardware *hw = &info->hw_address;
++	char *name = info->name;
++	struct ifaddrs *ifaddrs = ifaddrs_start;
++	struct ifaddrs *ifa = NULL;
++	struct sockaddr_ll *sll = NULL;
++	int sll_allocated = 0;
++	char *dup = NULL;
++	char *colon = NULL;
++        isc_result_t result = ISC_R_SUCCESS;
++        
++	if (ifaddrs == NULL)
++		log_fatal("Failed to get interfaces");
++
++	if ((sll = get_ll(ifaddrs, &ifa, name)) == NULL) {
++		/*
++		 * We were unable to get link-layer address for name.
++		 * Fall back to ioctl(SIOCGIFHWADDR).
++		 */
++		sll = ioctl_get_ll(name);
++		if (sll != NULL)
++			sll_allocated = 1;
++		else
++			// shouldn't happen
++			log_fatal("Unexpected internal error");
++	}
++
++	switch (sll->sll_hatype) {
++		case ARPHRD_ETHER:
++			hw->hlen = 7;
++			hw->hbuf[0] = HTYPE_ETHER;
++			memcpy(&hw->hbuf[1], sll->sll_addr, 6);
++			break;
++		case ARPHRD_IEEE802:
++#ifdef ARPHRD_IEEE802_TR
++		case ARPHRD_IEEE802_TR:
++#endif /* ARPHRD_IEEE802_TR */
++			hw->hlen = 7;
++			hw->hbuf[0] = HTYPE_IEEE802;
++			memcpy(&hw->hbuf[1], sll->sll_addr, 6);
++			break;
++		case ARPHRD_FDDI:
++			hw->hlen = 7;
++			hw->hbuf[0] = HTYPE_FDDI;
++			memcpy(&hw->hbuf[1], sll->sll_addr, 6);
++			break;
++		case ARPHRD_INFINIBAND:
++			dup = strdup(name);
++			/* Aliased infiniband interface is special case where
++			 * neither get_ll() nor ioctl_get_ll() get's correct hw
++			 * address, so we have to truncate the :0 and run
++			 * get_ll() again for the rest.
++			*/
++			if ((colon = strchr(dup, ':')) != NULL) {
++				*colon = '\0';
++				if ((sll = get_ll(ifaddrs, &ifa, dup)) == NULL)
++					log_fatal("Error getting hardware address for \"%s\": %m", name);
++			}
++			free (dup);
++			/* For Infiniband, save the broadcast address and store
++			 * the port GUID into the hardware address.
++			 */
++			if (ifa && (ifa->ifa_flags & IFF_BROADCAST)) {
++				struct sockaddr_ll *bll;
++
++				bll = (struct sockaddr_ll *)ifa->ifa_broadaddr;
++				memcpy(&info->bcast_addr, bll->sll_addr, 20);
++			} else {
++				memcpy(&info->bcast_addr, default_ib_bcast_addr,
++				       20);
++			}
++
++			hw->hlen = HARDWARE_ADDR_LEN_IOCTL + 1;
++			hw->hbuf[0] = HTYPE_INFINIBAND;
++			memcpy(&hw->hbuf[1],
++			       &sll->sll_addr[sll->sll_halen - HARDWARE_ADDR_LEN_IOCTL],
++			       HARDWARE_ADDR_LEN_IOCTL);
++			break;
++#if defined(ARPHRD_PPP)
++		case ARPHRD_PPP:
++			if (local_family != AF_INET6)
++				log_fatal("local_family != AF_INET6 for \"%s\"",
++					  name);
++			hw->hlen = 0;
++			hw->hbuf[0] = HTYPE_RESERVED;
++			/* 0xdeadbeef should never occur on the wire,
++			 * and is a signature that something went wrong.
++			 */
++			hw->hbuf[1] = 0xde;
++			hw->hbuf[2] = 0xad;
++			hw->hbuf[3] = 0xbe;
++			hw->hbuf[4] = 0xef;
++			break;
++#endif
++        default:
++          log_error("Unsupported device type %hu for \"%s\"",
++                      sll->sll_hatype, name);
++          result = ISC_R_NOTFOUND;
++
++	}
++
++	if (sll_allocated)
++		dfree(sll, MDL);
++	//freeifaddrs(ifaddrs);
++        return result;
++}
++
++void try_hw_addr2(struct interface_info *info, struct ifaddrs *ifaddrs_start){
++  get_hw_addr3(info, ifaddrs_start);
++}
++
+ // define ? 
+ void try_hw_addr(struct interface_info *info){
+   get_hw_addr2(info);
+diff --git a/includes/dhcpd.h b/includes/dhcpd.h
+index 40b5bdc..c9260e7 100644
+--- a/includes/dhcpd.h
++++ b/includes/dhcpd.h
+@@ -29,6 +29,7 @@
+ /*! \file includes/dhcpd.h */
+ 
+ #include "config.h"
++#include <ifaddrs.h>
+ 
+ #ifndef __CYGWIN32__
+ #include <sys/types.h>
+@@ -2595,6 +2596,10 @@ const char *print_time(TIME);
+ 
+ void get_hw_addr(struct interface_info *info);
+ void try_hw_addr(struct interface_info *info);
++
++void try_hw_addr2(struct interface_info *info, struct ifaddrs *ifaddrs_start);
++isc_result_t get_hw_addr3(struct interface_info *info, struct ifaddrs *ifaddrs_start);
++
+ isc_result_t get_hw_addr2(struct interface_info *info);
+ char *buf_to_hex (const unsigned char *s, unsigned len,
+                    const char *file, int line);
+-- 
+2.19.1
+
+
+
