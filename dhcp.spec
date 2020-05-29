@@ -51,7 +51,7 @@ Patch6004: bugfix-reduce-getifaddr-calls.patch
 
 Patch9001: bugfix-dhcpd-2038-problem.patch
 Patch9003: dhcpd-coredump-infiniband.patch
-Patch9004: huawei-bugfix-dhclient-check-if-pid-was-held.patch
+Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
