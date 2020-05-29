@@ -202,7 +202,7 @@ diff --git a/relay/Makefile.am b/relay/Makefile.am
 index 2ba5979..8900e0b 100644
 --- a/relay/Makefile.am
 +++ b/relay/Makefile.am
-@@ -6,7 +6,8 @@ dhcrelay_LDADD = ../common/libdhcp.@A@ ../omapip/libomapi.@A@ \
+@@ -8,6 +8,7 @@ dhcrelay_LDADD = ../common/libdhcp.@A@ ../omapip/libomapi.@A@ \
  		 @BINDLIBIRSDIR@/libirs.@A@ \
  		 @BINDLIBDNSDIR@/libdns.@A@ \
  		 @BINDLIBISCCFGDIR@/libisccfg.@A@ \

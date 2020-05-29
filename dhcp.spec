@@ -2,7 +2,7 @@
 %global dhcpconfdir %{_sysconfdir}/dhcp
 
 Name:      dhcp
-Version:   4.4.2b1
+Version:   4.4.2
 Release:   0
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
@@ -18,42 +18,40 @@ Source6:  dhcpd.service
 Source7:  dhcpd6.service
 Source8:  dhcrelay.service
 
-Patch1 : 0001-change-bug-url.patch
-Patch2 : 0002-additional-dhclient-options.patch
-Patch3 : 0003-Handle-releasing-interfaces-requested-by-sbin-ifup.patch
-Patch4 : 0004-Support-unicast-BOOTP-for-IBM-pSeries-systems-and-ma.patch
-Patch5 : 0005-Change-default-requested-options.patch
-Patch6 : 0006-Various-man-page-only-fixes.patch
-Patch7 : 0007-Change-paths-to-conform-to-our-standards.patch
-Patch8 : 0008-Make-sure-all-open-file-descriptors-are-closed-on-ex.patch
-Patch9 : 0009-Fix-garbage-in-format-string-error.patch
-Patch10 : 0010-Handle-null-timeout.patch
-Patch11 : 0011-Drop-unnecessary-capabilities.patch
-Patch12 : 0012-RFC-3442-Classless-Static-Route-Option-for-DHCPv4-51.patch
-Patch13 : 0013-DHCPv6-over-PPP-support-626514.patch
-Patch14 : 0014-IPoIB-support-660681.patch
-Patch15 : 0015-Add-GUID-DUID-to-dhcpd-logs-1064416.patch
-Patch16 : 0016-Turn-on-creating-sending-of-DUID.patch
-Patch17 : 0017-Send-unicast-request-release-via-correct-interface.patch
-Patch18 : 0018-No-subnet-declaration-for-iface-should-be-info-not-e.patch
-Patch19 : 0019-dhclient-write-DUID_LLT-even-in-stateless-mode-11563.patch
-Patch20 : 0020-Discover-all-hwaddress-for-xid-uniqueness.patch
-Patch21 : 0021-Load-leases-DB-in-non-replay-mode-only.patch
-Patch22 : 0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
-Patch23 : 0023-option-97-pxe-client-id.patch
-Patch24 : 0024-Detect-system-time-changes.patch
-Patch25 : 0025-bind-Detect-system-time-changes.patch
-Patch26 : 0026-Add-dhclient-5-B-option-description.patch
+Patch1: 0001-change-bug-url.patch
+Patch2: 0002-additional-dhclient-options.patch
+Patch3: 0003-Handle-releasing-interfaces-requested-by-sbin-ifup.patch
+Patch4: 0004-Support-unicast-BOOTP-for-IBM-pSeries-systems-and-ma.patch
+Patch5: 0005-Change-default-requested-options.patch
+Patch6: 0006-Various-man-page-only-fixes.patch
+Patch7: 0007-Change-paths-to-conform-to-our-standards.patch
+Patch8: 0008-Make-sure-all-open-file-descriptors-are-closed-on-ex.patch
+Patch9: 0009-Fix-garbage-in-format-string-error.patch
+Patch10: 0010-Handle-null-timeout.patch
+Patch11: 0011-Drop-unnecessary-capabilities.patch
+Patch12: 0012-RFC-3442-Classless-Static-Route-Option-for-DHCPv4-51.patch
+Patch13: 0013-DHCPv6-over-PPP-support-626514.patch
+Patch14: 0014-IPoIB-support-660681.patch
+Patch15: 0015-Add-GUID-DUID-to-dhcpd-logs-1064416.patch
+Patch16: 0016-Turn-on-creating-sending-of-DUID.patch
+Patch17: 0017-Send-unicast-request-release-via-correct-interface.patch
+Patch18: 0018-No-subnet-declaration-for-iface-should-be-info-not-e.patch
+Patch19: 0019-dhclient-write-DUID_LLT-even-in-stateless-mode-11563.patch
+Patch20: 0020-Discover-all-hwaddress-for-xid-uniqueness.patch
+Patch21: 0021-Load-leases-DB-in-non-replay-mode-only.patch
+Patch22: 0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
+Patch23: 0023-option-97-pxe-client-id.patch
+Patch24: 0024-Detect-system-time-changes.patch
+Patch25: 0025-bind-Detect-system-time-changes.patch
+Patch26: 0026-Add-dhclient-5-B-option-description.patch
 Patch27:  0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
-#Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
-#Patch6004: bugfix-reduce-getifaddr-calls.patch
+Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
+Patch6004: bugfix-reduce-getifaddr-calls.patch
 
-#Patch9000: dhcp-fix-dhclient-default-len-64-to-128.patch
-#Patch9001: bugfix-dhcpd-2038-problem.patch
-#Patch9002: adds-address-prefix-len-to-dhclient-cli.patch
-#Patch9003: dhcpd-coredump-infiniband.patch
-#Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
+Patch9001: bugfix-dhcpd-2038-problem.patch
+Patch9003: dhcpd-coredump-infiniband.patch
+Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -245,6 +243,7 @@ exit 0
 %dir %{_sysconfdir}/openldap/schema
 %config(noreplace) %{_sysconfdir}/openldap/schema/dhcp.schema
 %attr(0750,root,root) %dir %{dhcpconfdir}
+%dir %{_localstatedir}/lib/dhclient
 %dir %{dhcpconfdir}/dhclient.d
 %dir %{_sysconfdir}/NetworkManager
 %dir %{_sysconfdir}/NetworkManager/dispatcher.d
@@ -291,6 +290,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Wed May 6 2020 zhanglu<zhanglu37@huawei.com> - 4.4.2b1-1
+- Type:requirement
+- ID:NA
+- SUG:restart
+- DESC: add lease file directoroy
+
 * Thu Apr 24 2020 zhanglu<zhanglu37@huawei.com> - 4.4.2b1
 - Type:requirement
 - ID:NA
