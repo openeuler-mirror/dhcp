@@ -13,16 +13,14 @@ Signed-off-by: LuZhang<zhanglu37@huawei.com>
  3 files changed, 122 insertions(+), 1 deletion(-)
 
 diff --git a/common/discover.c b/common/discover.c
-index afa33eb..4033feb 100644
+index 6860645..26be5de 100644
 --- a/common/discover.c
 +++ b/common/discover.c
-@@ -573,11 +573,14 @@ discover_interfaces(int state) {
- 	int ir;
- 	isc_result_t status;
- 	int wifcount = 0;
-+	struct ifaddrs *ifaddrs_start = NULL;
+@@ -588,9 +588,12 @@ discover_interfaces(int state) {
+ #endif
  
  	static int setup_fallback = 0;
++	struct ifaddrs *ifaddrs_start = NULL;
  
  	if (!begin_iface_scan(&ifaces)) {
  		log_fatal("Can't get list of interfaces.");
@@ -31,7 +29,7 @@ index afa33eb..4033feb 100644
  	}
  
  	/* If we already have a list of interfaces, and we're running as
-@@ -636,7 +639,7 @@ discover_interfaces(int state) {
+@@ -651,7 +654,7 @@ discover_interfaces(int state) {
  			tmp = interfaces; /* XXX */
  		}
  		if (tmp != NULL)
@@ -40,7 +38,6 @@ index afa33eb..4033feb 100644
  
  		if (dhcp_interface_discovery_hook) {
  			(*dhcp_interface_discovery_hook)(tmp);
-diff --git a/common/lpf.c b/common/lpf.c
 index 9ec8a31..823ba6b 100644
 --- a/common/lpf.c
 +++ b/common/lpf.c
