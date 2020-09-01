@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   1
+Release:   2
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -289,6 +289,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Sep 01 2020 yuboyun <yuboyun@huawei.com> - 4.4.2-2
+- Type:NA
+- ID:NA
+- SUG:NA
+- DESC: add yaml file
+
 * Wed Jul 22 2020 gaihuiying<gaihuiying1@huawei.com> - 4.4.2-1
 - Type:requirement
 - ID:NA
