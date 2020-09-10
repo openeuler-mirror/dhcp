@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   2
+Release:   3
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -250,6 +250,7 @@ exit 0
 %attr(0644,root,root)   %{_unitdir}/dhcpd.service
 %attr(0644,root,root)   %{_unitdir}/dhcpd6.service
 %attr(0644,root,root) %{_unitdir}/dhcrelay.service
+%attr(0755,dhcpd,dhcpd) %dir %{_localstatedir}/lib/dhcpd
 %attr(0644,dhcpd,dhcpd) %verify(mode) %config(noreplace) %{_localstatedir}/lib/dhcpd/dhcpd.leases
 %attr(0644,dhcpd,dhcpd) %verify(mode) %config(noreplace) %{_localstatedir}/lib/dhcpd/dhcpd6.leases
 %config(noreplace) %{_sysconfdir}/sysconfig/dhcpd
@@ -289,6 +290,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Thu Sep 10 2020 gaihuiying <gaihuiying1@huawei.com> - 4.4.2-3
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC: change ownership of /var/lib/dhcpd/ to dhcpd:dhcpd
+
 * Tue Sep 01 2020 yuboyun <yuboyun@huawei.com> - 4.4.2-2
 - Type:NA
 - ID:NA
