@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   0
+Release:   1
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -56,7 +56,7 @@ Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
 
-Requires: shadow-utils coreutils grep sed systemd gawk ipcalc iproute iputils
+Requires: shadow-utils coreutils grep sed systemd gawk ipcalc iproute iputils %{name}-help
 
 
 Provides:  %{name}-common %{name}-libs %{name}-server %{name}-relay %{name}-compat %{name}-client
@@ -290,6 +290,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Nov 10 2020 quanhongfei<quanhongfei@huawei.com> - 4.4.2-1
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC: add dhcp-help dependency for dhcp
+
 * Wed May 6 2020 zhanglu<zhanglu37@huawei.com> - 4.4.2b1-1
 - Type:requirement
 - ID:NA
