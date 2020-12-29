@@ -1,0 +1,76 @@
+diff --git a/common/parse.c b/common/parse.c
+index 386a632..6ebbc9b 100644
+--- a/common/parse.c
++++ b/common/parse.c
+@@ -943,8 +943,8 @@ TIME
+ parse_date_core(cfile)
+ 	struct parse *cfile;
+ {
+-	int guess;
+-	int tzoff, year, mon, mday, hour, min, sec;
++	TIME guess;
++	long int tzoff, year, mon, mday, hour, min, sec;
+ 	const char *val;
+ 	enum dhcp_token token;
+ 	static int months[11] = { 31, 59, 90, 120, 151, 181,
+@@ -970,7 +970,7 @@ parse_date_core(cfile)
+ 		}
+ 
+ 		skip_token(&val, NULL, cfile); /* consume number */
+-		guess = atoi(val);
++		guess = atol(val);
+ 
+ 		return((TIME)guess);
+ 	}
+@@ -998,7 +998,7 @@ parse_date_core(cfile)
+ 	   somebody invents a time machine, I think we can safely disregard
+ 	   it.   This actually works around a stupid Y2K bug that was present
+ 	   in a very early beta release of dhcpd. */
+-	year = atoi(val);
++	year = atol(val);
+ 	if (year > 1900)
+ 		year -= 1900;
+ 
+@@ -1044,7 +1044,7 @@ parse_date_core(cfile)
+ 		return((TIME)0);
+ 	}
+ 	skip_token(&val, NULL, cfile); /* consume day of month */
+-	mday = atoi(val);
++	mday = atol(val);
+ 
+ 	/* Hour... */
+ 	token = peek_token(&val, NULL, cfile);
+@@ -1055,7 +1055,7 @@ parse_date_core(cfile)
+ 		return((TIME)0);
+ 	}
+ 	skip_token(&val, NULL, cfile); /* consume hour */
+-	hour = atoi(val);
++	hour = atol(val);
+ 
+ 	/* Colon separating hour from minute... */
+ 	token = peek_token(&val, NULL, cfile);
+@@ -1077,7 +1077,7 @@ parse_date_core(cfile)
+ 		return((TIME)0);
+ 	}
+ 	skip_token(&val, NULL, cfile); /* consume minute */
+-	min = atoi(val);
++	min = atol(val);
+ 
+ 	/* Colon separating minute from second... */
+ 	token = peek_token(&val, NULL, cfile);
+@@ -1099,13 +1099,13 @@ parse_date_core(cfile)
+ 		return((TIME)0);
+ 	}
+ 	skip_token(&val, NULL, cfile); /* consume second */
+-	sec = atoi(val);
++	sec = atol(val);
+ 
+ 	tzoff = 0;
+ 	token = peek_token(&val, NULL, cfile);
+ 	if (token == NUMBER) {
+ 		skip_token(&val, NULL, cfile); /* consume tzoff */
+-		tzoff = atoi(val);
++		tzoff = atol(val);
+ 	} else if (token != SEMI) {
+ 		skip_token(&val, NULL, cfile);
+ 		parse_warn(cfile,
