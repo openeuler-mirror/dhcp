@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   1
+Release:   2
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -48,6 +48,7 @@ Patch27:  0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
 Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
 Patch6004: bugfix-reduce-getifaddr-calls.patch
+Patch6005: bugfix-dhcp-64-bit-lease-parse.patch
 
 Patch9001: bugfix-dhcpd-2038-problem.patch
 Patch9003: dhcpd-coredump-infiniband.patch
@@ -291,6 +292,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Dec 29 2020 quanhongfei <quanhongfei@huawei.com> - 4.4.2-2
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:fix dhcp 64_bit lease parse 
+
 * Thu Sep 10 2020 gaihuiying <gaihuiying1@huawei.com> - 4.4.2-1
 - Type:bugfix
 - ID:NA
