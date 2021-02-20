@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   4
+Release:   5
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -42,7 +42,6 @@ Patch21: 0021-Load-leases-DB-in-non-replay-mode-only.patch
 Patch22: 0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
 Patch23: 0023-option-97-pxe-client-id.patch
 Patch24: 0024-Detect-system-time-changes.patch
-Patch25: 0025-bind-Detect-system-time-changes.patch
 Patch26: 0026-Add-dhclient-5-B-option-description.patch
 Patch27:  0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
@@ -53,6 +52,7 @@ Patch30: bugfix-dhcpd-2038-problem.patch
 Patch31: dhcpd-coredump-infiniband.patch
 Patch32: bugfix-dhclient-check-if-pid-was-held.patch
 Patch33: bugfix-dhcp-64-bit-lease-parse.patch
+Patch34: dhcp-remove-bind.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -86,12 +86,8 @@ libdhcpctl and libomapi static libraries are also included in this package.
 
 %prep
 %setup -n %{name}-%{version}
-pushd bind
-tar -xvf bind.tar.gz
-ln -s bind-9* bind
-popd
 %autopatch -p1 
-#rm bind/bind.tar.gz
+rm bind/bind.tar.gz
 
 sed -i -e 's|/var/db/|%{_localstatedir}/lib/dhcpd/|g' contrib/dhcp-lease-list.pl
 
@@ -109,7 +105,7 @@ CFLAGS="%{optflags} -fno-strict-aliasing" \
     --with-cli6-pid-file=%{_localstatedir}/run/dhclient6.pid \
     --with-relay-pid-file=%{_localstatedir}/run/dhcrelay.pid \
     --with-ldap --with-ldapcrypto --with-ldap-gssapi --disable-static  --enable-log-pid --enable-paranoia --enable-early-chroot \
-    --enable-binary-leases --with-systemd
+    --enable-binary-leases --with-systemd --with-libbind=/usr/bin/isc-export-config.sh
 
 make
 
@@ -291,6 +287,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Sat Feb 20 2021 hanzhijun <hanzhijun1@huawei.com> - 4.4.2-5
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:dhcp remove buildin bind
+
 * Tue Dec 29 2020 quanhongfei <quanhongfei@huawei.com> - 4.4.2-4
 - Type:bugfix
 - ID:NA
