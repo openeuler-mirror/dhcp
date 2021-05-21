@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   3
+Release:   4
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -44,15 +44,16 @@ Patch23: 0023-option-97-pxe-client-id.patch
 Patch24: 0024-Detect-system-time-changes.patch
 Patch25: 0025-bind-Detect-system-time-changes.patch
 Patch26: 0026-Add-dhclient-5-B-option-description.patch
-Patch27:  0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
+Patch27: 0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
-Patch6003: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
-Patch6004: bugfix-reduce-getifaddr-calls.patch
-Patch6005: bugfix-dhcp-64-bit-lease-parse.patch
+Patch28: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
+Patch29: bugfix-reduce-getifaddr-calls.patch
 
-Patch9001: bugfix-dhcpd-2038-problem.patch
-Patch9003: dhcpd-coredump-infiniband.patch
-Patch9004: bugfix-dhclient-check-if-pid-was-held.patch
+Patch30: bugfix-dhcpd-2038-problem.patch
+Patch31: dhcpd-coredump-infiniband.patch
+Patch32: bugfix-dhclient-check-if-pid-was-held.patch
+Patch33: bugfix-error-message-display.patch
+Patch34: bugfix-dhcp-64-bit-lease-parse.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -292,6 +293,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Fri May 21 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-4
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC: fix error message display and sync with sp1
+
 * Tue Jan 5 2021 gaihuiying <gaihuiying1@huawei.com> - 4.4.2-3
 - Type:bugfix
 - ID:NA
