@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   4
+Release:   5
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -54,6 +54,7 @@ Patch31: dhcpd-coredump-infiniband.patch
 Patch32: bugfix-dhclient-check-if-pid-was-held.patch
 Patch33: bugfix-error-message-display.patch
 Patch34: bugfix-dhcp-64-bit-lease-parse.patch
+Patch35: CVE-2021-25217.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -293,6 +294,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Jun 1 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-5
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:fix CVE-2021-25217
+
 * Tue Dec 29 2020 quanhongfei <quanhongfei@huawei.com> - 4.4.2-4
 - Type:bugfix
 - ID:NA
