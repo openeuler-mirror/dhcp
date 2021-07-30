@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   6
+Release:   7
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -54,6 +54,8 @@ Patch32: bugfix-dhclient-check-if-pid-was-held.patch
 Patch33: bugfix-dhcp-64-bit-lease-parse.patch
 Patch34: dhcp-remove-bind.patch
 Patch35: CVE-2021-25217.patch
+Patch36: 0001-fix-multiple-definition-with-gcc-10.patch
+Patch37: 0002-fix-multiple-definition-with-gcc-10.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -288,6 +290,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Fri Jul 30 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-7
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:fix multiple defination with gcc 10
+
 * Mon May 31 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-6
 - Type:CVE
 - ID:NA

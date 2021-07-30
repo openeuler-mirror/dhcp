@@ -1,0 +1,25 @@
+From 2f366470c90387ffae73b34390f6b8e61acb2b3b Mon Sep 17 00:00:00 2001
+From: renmingshuai <renmingshuai@huawei.com>
+Date: Fri, 30 Jul 2021 21:52:55 +0800
+Subject: [PATCH] fix multiple definition with gcc 10
+
+---
+ server/omapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/server/omapi.c b/server/omapi.c
+index f741131..a6a3651 100644
+--- a/server/omapi.c
++++ b/server/omapi.c
+@@ -47,7 +47,7 @@ omapi_object_type_t *dhcp_type_lease;
+ omapi_object_type_t *dhcp_type_pool;
+ omapi_object_type_t *dhcp_type_class;
+ omapi_object_type_t *dhcp_type_subclass;
+-omapi_object_type_t *dhcp_type_host;
++extern omapi_object_type_t *dhcp_type_host;
+ #if defined (FAILOVER_PROTOCOL)
+ omapi_object_type_t *dhcp_type_failover_state;
+ omapi_object_type_t *dhcp_type_failover_link;
+-- 
+1.8.3.1
+
