@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   5
+Release:   6
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -188,6 +188,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-client
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server
 install -p -m 0755 doc/examples/dhclient-dhcpv6.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-client/dhclient6.conf.example
 install -p -m 0755 doc/examples/dhcpd-dhcpv6.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server/dhcpd6.conf.example
+install -p -m 0755 server/dhcpd.conf.example $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server/dhcpd.conf.example
 
 install -D -p -m 0644 contrib/ldap/dhcp.schema $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/dhcp.schema
 
@@ -243,6 +244,7 @@ exit 0
 %doc contrib/ldap/ contrib/dhcp-lease-list.pl
 %{_datadir}/doc/dhcp-client/dhclient6.conf.example
 %{_datadir}/doc/dhcp-server/dhcpd6.conf.example
+%{_datadir}/doc/dhcp-server/dhcpd.conf.example
 %dir %{_sysconfdir}/openldap/schema
 %config(noreplace) %{_sysconfdir}/openldap/schema/dhcp.schema
 %attr(0750,root,root) %dir %{dhcpconfdir}
@@ -294,6 +296,9 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Sep 14 2021 panchenbo<panchenbo@uniontech.com.com> - 4.4.2-6
+- DESC: install dhcpd.conf.example
+
 * Tue Jun 1 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-5
 - Type:bugfix
 - ID:NA
