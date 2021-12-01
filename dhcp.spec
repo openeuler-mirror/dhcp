@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   8
+Release:   9
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -56,6 +56,10 @@ Patch34: dhcp-remove-bind.patch
 Patch35: CVE-2021-25217.patch
 Patch36: 0001-fix-multiple-definition-with-gcc-10.patch
 Patch37: 0002-fix-multiple-definition-with-gcc-10.patch
+
+Patch38: fix-coredump-when-client-active-is-NULL.patch
+Patch39: feature-lease-time-config-ipv6.patch
+Patch40: add-a-test-case-to-parse-code93-in-option_unittest.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -292,6 +296,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Fri Nov 26 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-9
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:fix coredump when client active is NULL, add lease time config ipv6 and add a unittest
+
 * Tue Sep 14 2021 panchenbo<panchenbo@uniontech.com.com> - 4.4.2-8
 - DESC: install dhcpd.conf.example
 
