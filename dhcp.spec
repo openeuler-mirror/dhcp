@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   9
+Release:   10
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -42,6 +42,7 @@ Patch21: 0021-Load-leases-DB-in-non-replay-mode-only.patch
 Patch22: 0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
 Patch23: 0023-option-97-pxe-client-id.patch
 Patch24: 0024-Detect-system-time-changes.patch
+Patch25: 0025-bind-Detect-system-time-changes.patch
 Patch26: 0026-Add-dhclient-5-B-option-description.patch
 Patch27: 0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 
@@ -52,16 +53,15 @@ Patch30: bugfix-dhcpd-2038-problem.patch
 Patch31: dhcpd-coredump-infiniband.patch
 Patch32: bugfix-dhclient-check-if-pid-was-held.patch
 Patch33: bugfix-dhcp-64-bit-lease-parse.patch
-Patch34: dhcp-remove-bind.patch
-Patch35: CVE-2021-25217.patch
-Patch36: 0001-fix-multiple-definition-with-gcc-10.patch
-Patch37: 0002-fix-multiple-definition-with-gcc-10.patch
+Patch34: CVE-2021-25217.patch
+Patch35: 0001-fix-multiple-definition-with-gcc-10.patch
+Patch36: 0002-fix-multiple-definition-with-gcc-10.patch
 
-Patch38: fix-coredump-when-client-active-is-NULL.patch
-Patch39: feature-lease-time-config-ipv6.patch
-Patch40: add-a-test-case-to-parse-code93-in-option_unittest.patch
+Patch37: fix-coredump-when-client-active-is-NULL.patch
+Patch38: feature-lease-time-config-ipv6.patch
+Patch39: add-a-test-case-to-parse-code93-in-option_unittest.patch
 
-BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
+BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel
 BuildRequires: systemd systemd-devel
 
 Requires: shadow-utils coreutils grep sed systemd gawk ipcalc iproute iputils
@@ -93,8 +93,12 @@ libdhcpctl and libomapi static libraries are also included in this package.
 
 %prep
 %setup -n %{name}-%{version}
+pushd bind
+tar -xvf bind.tar.gz
+ln -s bind-9* bind
+popd
 %autopatch -p1 
-rm bind/bind.tar.gz
+#rm bind/bind.tar.gz
 
 sed -i -e 's|/var/db/|%{_localstatedir}/lib/dhcpd/|g' contrib/dhcp-lease-list.pl
 
@@ -112,7 +116,7 @@ CFLAGS="%{optflags} -fno-strict-aliasing" \
     --with-cli6-pid-file=%{_localstatedir}/run/dhclient6.pid \
     --with-relay-pid-file=%{_localstatedir}/run/dhcrelay.pid \
     --with-ldap --with-ldapcrypto --with-ldap-gssapi --disable-static  --enable-log-pid --enable-paranoia --enable-early-chroot \
-    --enable-binary-leases --with-systemd --with-libbind=/usr/bin/isc-export-config.sh
+    --enable-binary-leases --with-systemd
 
 make
 
@@ -296,6 +300,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Fri Jan 07 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-10
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:remove buildrequires bind-export-devel and buildin bind
+
 * Fri Nov 26 2021 renmingshuai <renmingshuai@huawei.com> - 4.4.2-9
 - Type:bugfix
 - ID:NA
