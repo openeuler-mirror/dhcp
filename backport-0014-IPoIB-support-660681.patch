@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0014-IPoIB-support-660681.patch
 From 6d74c2d0ceadef2eb1c43c2da47f1d5b732adf8c Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:34:21 +0100

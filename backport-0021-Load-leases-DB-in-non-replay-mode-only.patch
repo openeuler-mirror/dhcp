@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0021-Load-leases-DB-in-non-replay-mode-only.patch
 commit 50c2b3ba8ce030a47b55dd707bb8a6ab20444a05
 Author: Pavel Zhukov <pzhukov@redhat.com>
 Date:   Thu Feb 21 10:44:06 2019 +0100

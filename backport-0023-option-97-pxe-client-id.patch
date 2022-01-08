@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0023-option-97-pxe-client-id.patch
 From 6fd7894ea57791c8eee16c21d19da34b909e016e Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 28 Feb 2019 16:40:38 +0100

@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0019-dhclient-write-DUID_LLT-even-in-stateless-mode-11563.patch
 From 6ea56e988df1da51f7d0bdd8984b38e40102c17b Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:41:14 +0100
