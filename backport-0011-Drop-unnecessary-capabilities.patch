@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0011-Drop-unnecessary-capabilities.patch
 From 3b37f4b7bb3a17f8bd655be919915a1912062ea6 Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:30:28 +0100

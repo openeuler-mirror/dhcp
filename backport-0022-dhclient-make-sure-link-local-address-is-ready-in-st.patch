@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0022-dhclient-make-sure-link-local-address-is-ready-in-st.patch
 From 9975d198a2c02e32c31c3e0f43d2aa79dfa7f508 Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 28 Feb 2019 15:30:21 +0100
