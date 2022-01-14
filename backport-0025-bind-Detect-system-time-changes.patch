@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0025-bind-Detect-system-time-changes.patch
 From ef4f5e80d8a1ea1507829ea6f5214f276478f475 Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Tue, 22 Oct 2019 16:23:24 +0200

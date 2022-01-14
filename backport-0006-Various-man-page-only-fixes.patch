@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0006-Various-man-page-only-fixes.patch
 From 846779467f7393b19e8d206405116e1e26e16efc Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:25:53 +0100

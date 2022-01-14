@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
 From 8d974fd1f667e1b957ad4092fe66a8bb94f5f8fd Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 7 Nov 2019 14:47:45 +0100

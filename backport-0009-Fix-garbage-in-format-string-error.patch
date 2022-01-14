@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0009-Fix-garbage-in-format-string-error.patch
 From a0a2186ce52a31357d4eb3c32d7d6887e4603814 Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:28:13 +0100
