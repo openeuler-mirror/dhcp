@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0016-Turn-on-creating-sending-of-DUID.patch
 From 2f6b827e89305adcff45288c632785ac054adb8e Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:36:30 +0100

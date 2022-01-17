@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0015-Add-GUID-DUID-to-dhcpd-logs-1064416.patch
 From 3d3e442ed1316930a5360e4d5a56b46a42a29419 Mon Sep 17 00:00:00 2001
 From: Pavel Zhukov <pzhukov@redhat.com>
 Date: Thu, 21 Feb 2019 10:35:47 +0100

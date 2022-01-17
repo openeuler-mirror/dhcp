@@ -1,3 +1,4 @@
+Reference: https://src.fedoraproject.org/rpms/dhcp/blob/rawhide/f/0026-Add-dhclient-5-B-option-description.patch
 commit 6acfd3125546a0e5db8fae8a9964cd2f88bf68c0
 Author: Pavel Zhukov <pzhukov@redhat.com>
 Date:   Tue Oct 22 16:28:04 2019 +0200
