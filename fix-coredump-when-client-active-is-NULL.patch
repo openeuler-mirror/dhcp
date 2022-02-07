@@ -1,0 +1,67 @@
+From 098d7f8e2e2b468e6a615084fb4330fed49bb54a Mon Sep 17 00:00:00 2001
+From: hanzhijun <hanzhijun1@huawei.com>
+Date: Mon, 24 Aug 2020 15:39:53 +0800
+Subject: [PATCH] fix coredump when client -> active is NULL
+
+---
+ client/dhclient.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/client/dhclient.c b/client/dhclient.c
+index 2a17bfd..7581670 100644
+--- a/client/dhclient.c
++++ b/client/dhclient.c
+@@ -2059,6 +2059,24 @@ void state_bound (cpp)
+ 	struct data_string ds;
+ 
+ 	ASSERT_STATE(state, S_BOUND);
++	if (!client -> active)
++	{
++		struct timeval tv;
++
++		log_error ("No active lease in bound.");
++		script_init(client, "FAIL", (struct string_list *)0);
++		if (client -> alias)
++			script_write_params(client, "alias_", client -> alias);
++		script_go(client);
++		client -> state = S_INIT;
++		tv.tv_sec = cur_tv.tv_sec + ((client->config->retry_interval + 1) / 2 +
++			    (random() % client->config->retry_interval));
++		tv.tv_usec = ((tv.tv_sec - cur_tv.tv_sec) > 1) ?
++				random() % 1000000 : cur_tv.tv_usec;
++		add_timeout(&tv, state_init, client, 0, 0);
++		detach ();
++		return;
++	}
+ 
+ 	/* T1 has expired. */
+ 	make_request (client, client -> active);
+@@ -3173,6 +3191,25 @@ void send_request (cpp)
+ 		return;
+ 	}
+ 
++        if (!client -> active && client -> state != S_REQUESTING)
++        {
++                struct timeval tv;
++
++                log_error ("No active lease in request.");
++                script_init(client, "FAIL", (struct string_list *)0);
++                if (client -> alias)
++                        script_write_params(client, "alias_", client -> alias);
++                script_go(client);
++                client -> state = S_INIT;
++                tv.tv_sec = cur_tv.tv_sec + ((client->config->retry_interval + 1) / 2 +
++                            (random() % client->config->retry_interval));
++                tv.tv_usec = ((tv.tv_sec - cur_tv.tv_sec) > 1) ?
++                                random() % 1000000 : cur_tv.tv_usec;
++                add_timeout(&tv, state_init, client, 0, 0);
++                detach ();
++                return;
++        }
++
+ 	/* If we're in the reboot state, make sure the media is set up
+ 	   correctly. */
+ 	if (client -> state == S_REBOOTING &&
+-- 
+2.27.0
+
