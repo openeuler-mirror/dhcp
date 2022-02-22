@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   11
+Release:   12
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -60,6 +60,7 @@ Patch36: fix-multiple-definition-with-gcc-10-2.patch
 Patch37: fix-coredump-when-client-active-is-NULL.patch
 Patch38: feature-lease-time-config-ipv6.patch
 Patch39: add-a-test-case-to-parse-code93-in-option_unittest.patch
+Patch40: bugfix-error-message-display.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel
 BuildRequires: systemd systemd-devel
@@ -300,6 +301,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Feb 22 2022 zengwefeng <zwfeng@huawei.com> - 4.4.2-12
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:fix error message display
+
 * Wed Jan 12 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-11
 - Type:bugfix
 - ID:NA
