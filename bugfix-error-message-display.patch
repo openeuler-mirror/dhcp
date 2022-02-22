@@ -1,0 +1,12 @@
+diff -ruNa dhcp-4.4.2-org/omapip/errwarn.c dhcp-4.4.2/omapip/errwarn.c
+--- dhcp-4.4.2-org/omapip/errwarn.c 16:51:13.626927174 +0800
++++ dhcp-4.4.2/omapip/errwarn.c 16:55:40.477496361 +0800
+@@ -57,7 +57,7 @@
+     size_t url_len = 256;
+ 
+     url = (char *) malloc(url_len * sizeof(char));
+-    strcpy(url, "https://bugzilla.redhat.com/");
++    strcpy(url, "https://gitee.com/src-openeuler/dhcp/issues");
+ 
+     if (!file)
+         return url;
