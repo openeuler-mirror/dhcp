@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   12
+Release:   13
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -183,13 +183,15 @@ cat << EOF > %{buildroot}%{dhcpconfdir}/dhcpd6.conf
 EOF
 
 rm -f $RPM_BUILD_ROOT/usr/lib/debug/usr/sbin/dhcrelay-4.3.6-28.7.aarch64.debug
-rm -f $RPM_BUILD_ROOT%{_sysconfdir}/dhclient.conf.example
-rm -f $RPM_BUILD_ROOT%{_sysconfdir}/dhcpd.conf.example
-
-
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-client
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server
+
+mv -f $RPM_BUILD_ROOT%{_sysconfdir}/dhclient.conf.example doc/examples/dhclient-dhcpv4.conf
+mv -f $RPM_BUILD_ROOT%{_sysconfdir}/dhcpd.conf.example doc/examples/dhcpd-dhcpv4.conf
+install -p -m 0755 doc/examples/dhclient-dhcpv4.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-client/dhclient.conf.example
+install -p -m 0755 doc/examples/dhcpd-dhcpv4.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server/dhcpd.conf.example
+
 install -p -m 0755 doc/examples/dhclient-dhcpv6.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-client/dhclient6.conf.example
 install -p -m 0755 doc/examples/dhcpd-dhcpv6.conf $RPM_BUILD_ROOT%{_datadir}/doc/dhcp-server/dhcpd6.conf.example
 
@@ -243,8 +245,10 @@ exit 0
 %defattr(-,root,root)
 %license LICENSE
 %doc README RELNOTES doc/References.txt
-%doc README.dhclient.d client/dhclient.conf.example
+%doc README.dhclient.d
 %doc contrib/ldap/ contrib/dhcp-lease-list.pl
+%{_datadir}/doc/dhcp-client/dhclient.conf.example
+%{_datadir}/doc/dhcp-server/dhcpd.conf.example
 %{_datadir}/doc/dhcp-client/dhclient6.conf.example
 %{_datadir}/doc/dhcp-server/dhcpd6.conf.example
 %dir %{_sysconfdir}/openldap/schema
@@ -298,6 +302,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Thu Aug 25 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-13
+- Type:bugfix
+- ID:NA
+- SUG:restart
+- DESC:add dhX.conf.example in doc
+
 * Wed Aug 24 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-12
 - Type:bugfix
 - ID:NA
