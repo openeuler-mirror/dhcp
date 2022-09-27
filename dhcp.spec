@@ -3,10 +3,10 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   13
+Release:   14
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
-Epoch:     12
+Epoch:     13
 License:   ISC
 URL:       https://www.isc.org/dhcp/
 Source0:   http://ftp.isc.org/isc/dhcp/%{version}/dhcp-%{version}.tar.gz
@@ -61,6 +61,10 @@ Patch37: fix-coredump-when-client-active-is-NULL.patch
 Patch38: feature-lease-time-config-ipv6.patch
 Patch39: add-a-test-case-to-parse-code93-in-option_unittest.patch
 Patch40: bugfix-error-message-display.patch
+Patch41: backport-Fix-CVE-2021-25214.patch
+Patch42: backport-Fix-CVE-2021-25215.patch
+Patch43: backport-Fix-CVE-2021-25219.patch
+Patch44: backport-Fix-CVE-2021-25220.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel
 BuildRequires: systemd systemd-devel
@@ -305,6 +309,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Sep 27 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-14
+- Type:CVE
+- ID:NA
+- SUG:restart
+- DESC:Fix CVE-2021-25214 CVE-2021-25215 CVE-2021-25219 CVE-2021-25220
+
 * Sat Jul 30 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-13
 - Type:bugfix
 - ID:NA
