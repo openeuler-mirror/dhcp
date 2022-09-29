@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.2
-Release:   7
+Release:   8
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -54,6 +54,10 @@ Patch33: bugfix-error-message-display.patch
 Patch34: bugfix-dhcp-64-bit-lease-parse.patch
 Patch35: CVE-2021-25217.patch
 Patch36: fix-coredump-when-client-active-is-NULL.patch
+Patch37: backport-Fix-CVE-2021-25214.patch
+Patch38: backport-Fix-CVE-2021-25215.patch
+Patch39: backport-Fix-CVE-2021-25219.patch
+Patch40: backport-Fix-CVE-2021-25220.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel bind-export-devel
 BuildRequires: systemd systemd-devel
@@ -295,6 +299,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Sep 27 2022 renmingshuai <renmingshuai@huawei.com> - 12:4.4.2-8
+- Type:cves
+- ID:CVE-2021-25214, CVE-2021-25215, CVE-2021-25219, CVE-2021-25220
+- SUG:restart
+- DESC: Fix CVE-2021-25214 CVE-2021-25215 CVE-2021-25219 CVE-2021-25220
+
 * Mon Feb 7 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-7
 - Type:bugfix
 - ID:NA
