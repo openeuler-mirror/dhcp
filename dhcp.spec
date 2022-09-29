@@ -6,7 +6,7 @@ Version:   4.4.2
 Release:   14
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
-Epoch:     13
+Epoch:     12
 License:   ISC
 URL:       https://www.isc.org/dhcp/
 Source0:   http://ftp.isc.org/isc/dhcp/%{version}/dhcp-%{version}.tar.gz
@@ -306,9 +306,9 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
-* Tue Sep 27 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-14
-- Type:CVE
-- ID:NA
+* Tue Sep 27 2022 renmingshuai <renmingshuai@huawei.com> - 12:4.4.2-14
+- Type:cves
+- ID:CVE-2021-25214, CVE-2021-25215, CVE-2021-25219, CVE-2021-25220
 - SUG:restart
 - DESC:Fix CVE-2021-25214 CVE-2021-25215 CVE-2021-25219 CVE-2021-25220
 
