@@ -2,7 +2,7 @@ From 8fb8c0fcd63917fc500fe6f14436234edc6677ed Mon Sep 17 00:00:00 2001
 From: majun <majun65@huawei.com>
 Date: Tue, 1 Sep 2020 11:50:17 +0800
 Subject: [PATCH] lease-time-config
-Signed-off-by: majun <majun65@huawei.com> 
+Signed-off-by: majun <majun65@huawei.com>
 
 ---
  client/clparse.c    | 5 +++++
@@ -11,7 +11,7 @@ Signed-off-by: majun <majun65@huawei.com>
  3 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/client/clparse.c b/client/clparse.c
-index d445bae..d43e8ae 100644
+index 57f6456..b548ff0 100644
 --- a/client/clparse.c
 +++ b/client/clparse.c
 @@ -453,6 +453,11 @@ void parse_client_statement (cfile, ip, config)
@@ -27,10 +27,10 @@ index d445bae..d43e8ae 100644
  		skip_token(&val, (unsigned *)0, cfile);
  		token = next_token (&val, (unsigned *)0, cfile);
 diff --git a/common/conflex.c b/common/conflex.c
-index 71c0bf5..fa3acb8 100644
+index 1fa2be3..a83cf47 100644
 --- a/common/conflex.c
 +++ b/common/conflex.c
-@@ -1146,6 +1146,9 @@ intern(char *atom, enum dhcp_token dfv) {
+@@ -1148,6 +1148,9 @@ intern(char *atom, enum dhcp_token dfv) {
  		if (!strcasecmp (atom + 1, "ease-id-format")) {
  			return LEASE_ID_FORMAT;
  		}
@@ -41,16 +41,16 @@ index 71c0bf5..fa3acb8 100644
  	      case 'm':
  		if (!strncasecmp (atom + 1, "ax", 2)) {
 diff --git a/includes/dhctoken.h b/includes/dhctoken.h
-index b4d93ba..0bc31ca 100644
+index 3f5334e..b23d8ce 100644
 --- a/includes/dhctoken.h
 +++ b/includes/dhctoken.h
-@@ -378,7 +378,8 @@ enum dhcp_token {
- 	TOKEN_OCTAL = 678,
+@@ -379,7 +379,8 @@ enum dhcp_token {
  	KEY_ALGORITHM = 679,
-         BOOTP_BROADCAST_ALWAYS = 680,
--	DESTINATION_DESCRIPTOR = 681
-+	DESTINATION_DESCRIPTOR = 681,
-+	LEASE_TIME_IPV6 = 682
+ 	BOOTP_BROADCAST_ALWAYS = 680,
+ 	DESTINATION_DESCRIPTOR = 681,
+-	DISCONNECT = 682
++	DISCONNECT = 682,
++    LEASE_TIME_IPV6 = 683
  };
  
  #define is_identifier(x)	((x) >= FIRST_TOKEN &&	\
