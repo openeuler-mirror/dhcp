@@ -4,14 +4,14 @@ Date: Tue, 10 Nov 2020 02:10:57 -0500
 Subject: [PATCH] add a test case to parse code93 in option_unittest
 
 ---
- common/tests/option_unittest.c | 70 ++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ common/tests/option_unittest.c | 71 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
 diff --git a/common/tests/option_unittest.c b/common/tests/option_unittest.c
-index cd52cfb..0bb6517 100644
+index 600ebe6..688762d 100644
 --- a/common/tests/option_unittest.c
 +++ b/common/tests/option_unittest.c
-@@ -129,6 +129,75 @@ ATF_TC_BODY(pretty_print_option, tc)
+@@ -213,6 +213,76 @@ ATF_TC_BODY(parse_X, tc)
      }
  }
  
@@ -84,17 +84,18 @@ index cd52cfb..0bb6517 100644
 +            atf_tc_fail("pretty_print_option did not return \"<error>\"");
 +    }
 +}
- 
++
  /* This macro defines main() method that will call specified
     test cases. tp and simple_test_case names can be whatever you want
-@@ -137,6 +206,7 @@ ATF_TP_ADD_TCS(tp)
- {
+    as long as it is a valid variable identifier. */
+@@ -221,6 +291,7 @@ ATF_TP_ADD_TCS(tp)
      ATF_TP_ADD_TC(tp, option_refcnt);
      ATF_TP_ADD_TC(tp, pretty_print_option);
+     ATF_TP_ADD_TC(tp, parse_X);
 +    ATF_TP_ADD_TC(tp, parse_code93_option);
  
      return (atf_no_error());
  }
 -- 
-2.19.1
+2.23.0
 
