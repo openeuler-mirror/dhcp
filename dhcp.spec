@@ -2,8 +2,8 @@
 %global dhcpconfdir %{_sysconfdir}/dhcp
 
 Name:      dhcp
-Version:   4.4.2
-Release:   13
+Version:   4.4.3
+Release:   1
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -45,24 +45,24 @@ Patch24: backport-0024-Detect-system-time-changes.patch
 Patch25: backport-0025-bind-Detect-system-time-changes.patch
 Patch26: backport-0026-Add-dhclient-5-B-option-description.patch
 Patch27: backport-0027-Add-missed-sd-notify-patch-to-manage-dhcpd-with-syst.patch
-
 Patch28: bugfix-dhcp-4.2.5-check-dhclient-pid.patch
 Patch29: bugfix-reduce-getifaddr-calls.patch
-
 Patch30: bugfix-dhcpd-2038-problem.patch
 Patch31: dhcpd-coredump-infiniband.patch
 Patch32: bugfix-dhclient-check-if-pid-was-held.patch
 Patch33: bugfix-dhcp-64-bit-lease-parse.patch
-Patch35: backport-CVE-2021-25217.patch
-Patch36: fix-multiple-definition-with-gcc-10-1.patch
-Patch37: fix-multiple-definition-with-gcc-10-2.patch
-Patch38: fix-coredump-when-client-active-is-NULL.patch
-Patch39: bugfix-error-message-display.patch 
-Patch40: feature-lease-time-config-ipv6.patch
-Patch41: add-a-test-case-to-parse-code93-in-option_unittest.patch
+Patch34: fix-coredump-when-client-active-is-NULL.patch
+Patch35: feature-lease-time-config-ipv6.patch
+Patch36: add-a-test-case-to-parse-code93-in-option_unittest.patch
+Patch37: bugfix-error-message-display.patch
+Patch38: backport-Fix-CVE-2021-25220.patch
+Patch39: backport-Fix-CVE-2022-2928.patch
+Patch40: backport-Fix-CVE-2022-2929.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel
 BuildRequires: systemd systemd-devel
+# run tests need
+BuildRequires: kyua atf-tests
 
 Requires: shadow-utils coreutils grep sed systemd gawk ipcalc iproute iputils
 
@@ -115,8 +115,12 @@ CFLAGS="%{optflags} -fno-strict-aliasing" \
     --with-cli-pid-file=%{_localstatedir}/run/dhclient.pid \
     --with-cli6-pid-file=%{_localstatedir}/run/dhclient6.pid \
     --with-relay-pid-file=%{_localstatedir}/run/dhcrelay.pid \
-    --with-ldap --with-ldapcrypto --with-ldap-gssapi --disable-static  --enable-log-pid --enable-paranoia --enable-early-chroot \
-    --enable-binary-leases --with-systemd
+    --with-ldap --with-ldapcrypto --with-ldap-gssapi --enable-log-pid --enable-paranoia --enable-early-chroot \
+    --enable-binary-leases --with-systemd \
+    --with-atf
+
+# define LDAP_CONFIGURATION when run common tests
+sed -i "s/ATF_CFLAGS =/ATF_CFLAGS = -DLDAP_CONFIGURATION/g" common/tests/Makefile
 
 make
 
@@ -302,6 +306,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Tue Nov 1 2022 renmingshuai <renmingshuai@huawei.com> - 12:4.4.3-1
+- Type:requirement
+- ID:
+- SUG:restart
+- DESC:update to 4.4.3
+
 * Thu Aug 25 2022 renmingshuai <renmingshuai@huawei.com> - 4.4.2-13
 - Type:bugfix
 - ID:NA
