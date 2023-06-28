@@ -1,0 +1,13 @@
+diff -u -r dhcp-4.4.3/client/dhclient.c dhcp-4.4.3/client/dhclient.c
+--- dhcp-4.4.3/client/dhclient.c	2023-06-28 13:24:44.000000000 +0800
++++ dhcp-4.4.3/client/dhclient.c	2023-06-28 13:26:34.000000000 +0800
+@@ -49,6 +49,9 @@
+  * Defined in stdio.h when _GNU_SOURCE is set, but we don't want to define
+  * that when building ISC code.
+  */
++#ifdef asprintf
++#undef asprintf
++#endif
+ extern int asprintf(char **strp, const char *fmt, ...);
+ 
+ TIME default_lease_time = 43200; /* 12 hours... */
