@@ -3,7 +3,7 @@
 
 Name:      dhcp
 Version:   4.4.3
-Release:   1
+Release:   2
 Summary:   Dynamic host configuration protocol software
 #Please don't change the epoch on this package
 Epoch:     12
@@ -58,6 +58,7 @@ Patch37: bugfix-error-message-display.patch
 Patch38: backport-Fix-CVE-2021-25220.patch
 Patch39: backport-Fix-CVE-2022-2928.patch
 Patch40: backport-Fix-CVE-2022-2929.patch
+Patch41: fix-clang.patch
 
 BuildRequires: gcc autoconf automake libtool openldap-devel krb5-devel libcap-ng-devel
 BuildRequires: systemd systemd-devel
@@ -306,6 +307,12 @@ exit 0
 %{_mandir}/man3/omapi.3.gz
 
 %changelog
+* Wed Jun 28 2023 yoo <sunyuechi@iscas.ac.cn> - 4.4.3-2
+- Type:NA
+- ID:NA
+- SUG:NA
+- DESC:fix clang build error
+
 * Tue Oct 25 2022 renmingshuai <renmingshuai@huawei.com> - 12:4.4.3-1
 - Type:requirement
 - ID:
